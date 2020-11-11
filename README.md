@@ -8,12 +8,39 @@ This is a solution to an assignment asking for an interpreter for a custom langu
 
 Run a set of test codes by running the main.py as a script:
 ```
-python main.py [1 | 2 | 3 | 4 | all]
+python main.py <program>
+
+<program>: 1 | 2 | 3 | 4 | all
+  * Which test program to run.
 ```
 where the parameter is the id of the test to run.
 
 
-### The assignment
+### The interpreter
+Behaves like an AST, evaluating the given syntax based on the language grammar (See section The assignment -> ROBOL Grammar).
+Located in ```Robol.py```
+
+Non-terminals are classified as separate Python classes, with naming similar to the ROBOL Grammar notation specified in the assignment documentation. Similar non-terminals that share attributes and purpose (e.g. different types of expressions (number, identifier, Boolean etc.) all evaluate to some value), are divided into subclasses of a common super class (e.g. Exp is the parent class of NumberExp and BooleanExp).
+
+Terminals are identified as symbols; Strings as a string in quotes; Symbols as a symbol in quotes; Numbers as an integer; Boolean values as a Boolean True or False.
+
+
+### Test code
+
+The test code defines a class TestCode which has methods for running some test programs. Each method has a set of commands. The commands simulate “parsed” commands, and calls relevant parts of the interpreter to instantiate the AST, then calls the interpret() method of the instance of the Program Class to start interpreting the AST.
+
+### The abstract
+
+Program is the top-level of the AST. Program is instantiated with an instance of Robot and Grid. Robot is instantiated with an instance of Start, a list of instances of Statements and a list of instances of Bindings.
+The initial call on Program.interpret() starts the interpretation of the AST-instance, initializing a recursive descent:
+Program.interpret() calls Robot.interpret(grid), which attempts to call the interpret-methods on Start, the bindings in the bindings-list, and the statements in the statement-list. Furthermore, bindings and statements are interpreted until non-terminal expressions are interpreted and evaluated, and actions are executed or errors are raised.
+
+### Entry file (main.py
+
+Checks that the given command is correct and executes relevant test code, or displays usage guidelines if command is invalid.
+
+
+## The assignment:
 
 <img src="./images/image--002.png" align="right">
 
